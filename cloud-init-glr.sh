@@ -36,7 +36,7 @@ if [ -n "$RUNNER_TOKEN" ]; then
         --registration-token "$RUNNER_TOKEN" \
         --non-interactive \
         --executor shell \
-        --description "EC2 GitLab Runner - $(curl -s http://169.254.169.254/latest/meta-data/instance-id)" \
+        --description "EC2 GitLab Runner" \
         --tag-list "ec2-glr-ubuntu"
     
     echo "GitLab Runner registered successfully"
