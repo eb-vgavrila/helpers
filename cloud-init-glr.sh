@@ -6,7 +6,7 @@ set -e
 # Log all output to a file for debugging
 exec > >(tee /var/log/user-data.log) 2>&1
 
-echo "Starting GitLab Runner installation at $(date)"
+echo "Starting configuring at $(date)"
 
 # Check if curl exists and install if not
 if ! command -v curl &> /dev/null; then
@@ -57,4 +57,9 @@ systemctl status gitlab-runner --no-pager
 echo "Removing logout script"
 sudo rm /home/gitlab-runner/.bash_logout
 
-echo "GitLab Runner installation completed at $(date)"
+echo "Configuring LXD..."
+getent group lxd | grep -qwF gitlab-runner || sudo usermod -aG lxd gitlab-runner
+lxd init --preseed < curl -s https://raw.githubusercontent.com/eb-vgavrila/helpers/refs/heads/main/lxd-preseed.yml
+
+echo "Finished configuring at $(date)"
+
