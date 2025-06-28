@@ -19,7 +19,9 @@ sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloa
 sudo chmod +x /usr/local/bin/gitlab-runner
 
 echo "Creating GitLab Runner user..."
-useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
+useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bashz
+echo "Add gitlab-runner to sudoers..."
+echo "gitlab-runner ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 
 echo "Installing GitLab Runner as a service..."
 sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
