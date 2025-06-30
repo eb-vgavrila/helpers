@@ -1,0 +1,17 @@
+name: hello
+base: core24
+version: '0.1'
+summary: Test snap
+description: |
+  This is my-snap's description.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+parts:
+  gnu-hello:
+    source: http://ftp.gnu.org/gnu/hello/hello-2.10.tar.gz
+    plugin: autotools
+apps:
+  hello:
+    command: usr/local/bin/hello
