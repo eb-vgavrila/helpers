@@ -19,7 +19,7 @@ sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloa
 sudo chmod +x /usr/local/bin/gitlab-runner
 
 echo "Creating GitLab Runner user..."
-useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bashz
+useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
 echo "Add gitlab-runner to sudoers..."
 echo "gitlab-runner ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 
