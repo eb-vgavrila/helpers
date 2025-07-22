@@ -29,7 +29,8 @@ EC2_INSTANCE_ID=$(echo $INSTANCE_RESPONSE | jq -r '.Instances[0].InstanceId')
 echo "Instance ID - $EC2_INSTANCE_ID"
 
 echo "Waiting for instance to reach running state..."
-for i in $(seq 1 10); do
+sleep 30  # we know it won't reach running state that fast
+for i in $(seq 1 20); do
   INSTANCE_STATE=$(aws ec2 describe-instances --instance-ids $EC2_INSTANCE_ID --region us-west-2 --query 'Reservations[0].Instances[0].State.Name' --output text)
   INSTANCE_STATUS=$(aws ec2 describe-instance-status --instance-ids $EC2_INSTANCE_ID --query 'InstanceStatuses[0].InstanceStatus.Status' --output text --region us-west-2)
   if [ "$INSTANCE_STATE" = "running" ] && [ "$INSTANCE_STATUS" = "ok" ]; then 
@@ -39,8 +40,8 @@ for i in $(seq 1 10); do
     echo "Instance failed to start properly. Current state: $INSTANCE_STATE"
     exit 1
   fi
-  if [ $i -eq 30 ]; then 
-    echo "Timeout: Instance did not reach running state with ok status after 30 attempts (5 minutes)"
+  if [ $i -eq 20 ]; then 
+    echo "Timeout: Instance did not reach running state with ok status after 20 attempts (10 minutes)"
     exit 1
   fi
   echo "Instance state $INSTANCE_STATE, Status $INSTANCE_STATUS"
