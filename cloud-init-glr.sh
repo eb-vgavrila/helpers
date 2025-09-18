@@ -39,7 +39,7 @@ if [ -n "$RUNNER_TOKEN" ]; then
         --non-interactive \
         --executor shell \
         --description "EC2 GitLab Runner" \
-        --tag-list "ec2-glr-ubuntu"
+        --tag-list "$RUNNER_TAG"
     
     echo "GitLab Runner registered successfully"
 else
