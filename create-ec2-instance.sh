@@ -18,6 +18,7 @@ echo "Creating user data script with RUNNER_TOKEN"
 cat > /tmp/user-data-with-token.sh << EOF
 #!/bin/bash
 export RUNNER_TOKEN="$GITLAB_RUNNER_TOKEN"
+export RUNNER_TAG="${GITLAB_RUNNER_TAG:-ec2-glr-ubuntu}"
 EOF
 
 curl -s https://raw.githubusercontent.com/eb-vgavrila/helpers/refs/heads/main/cloud-init-glr.sh >> /tmp/user-data-with-token.sh
