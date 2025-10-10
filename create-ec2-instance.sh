@@ -4,7 +4,6 @@
 # Environment variables required:
 # - AMI_ID: The AMI ID to use for the instance
 # - INSTANCE_TYPE: The instance type (e.g., c4.large)
-# - EC2_INSTANCE_NAME: The name tag for the instance
 # - GITLAB_RUNNER_TOKEN: Token for GitLab runner registration
 # - CI_PIPELINE_URL: Map pipeline URL to EC2 instance for traceability
 
@@ -24,7 +23,7 @@ EOF
 curl -s https://raw.githubusercontent.com/eb-vgavrila/helpers/refs/heads/main/cloud-init-glr.sh >> /tmp/user-data-with-token.sh
 
 echo "Creating EC2 Instance"
-INSTANCE_RESPONSE=$(aws ec2 run-instances --image-id $AMI_ID --associate-public-ip-address --instance-type $INSTANCE_TYPE --subnet-id $PUBLIC_SUBNET_ID --region us-west-2 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${EC2_INSTANCE_NAME}_${CI_PIPELINE_URL}}]" --user-data file:///tmp/user-data-with-token.sh --output json)
+INSTANCE_RESPONSE=$(aws ec2 run-instances --image-id $AMI_ID --associate-public-ip-address --instance-type $INSTANCE_TYPE --subnet-id $PUBLIC_SUBNET_ID --region us-west-2 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=ec2-glr_${CI_PIPELINE_URL}}]" --user-data file:///tmp/user-data-with-token.sh --output json)
 
 echo "Instance created successfully"
 EC2_INSTANCE_ID=$(echo $INSTANCE_RESPONSE | jq -r '.Instances[0].InstanceId')
