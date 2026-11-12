@@ -1,5 +1,5 @@
 #!/bin/bash
-# Reports the Snapcraft "Snap downloads" component status.
+# Reports the Snapcraft "api.snapcraft.io - refresh" component status.
 #   exit 0  - Operational, or the status could not be determined (fail open)
 #   exit 18 - confirmed not Operational
 
@@ -30,20 +30,20 @@ for attempt in $(seq 1 "$ATTEMPTS"); do
     exit 0
   fi
 
-  STATUS=$(sed -n 's/.*<description>Snap downloads is \([^<]*\)<\/description>.*/\1/p' "$FEED")
-  PUB_DATE=$(sed -n 's/.*<pubDate>\([^<]*\)<\/pubDate>.*/\1/p' "$FEED" | head -1)
+  STATUS=$(sed -n 's/.*<description>api.snapcraft.io - refresh is \([^<]*\)<\/description>.*/\1/p' "$FEED")
+  PUB_DATE=$(sed -n 's/.*<title>api.snapcraft.io - refresh - [^<]*<\/title><pubDate>\([^<]*\)<\/pubDate>.*/\1/p' "$FEED")
   [ -n "$STATUS" ] && break
   sleep 1
 done
 
 if [ -z "$STATUS" ]; then
-  echo "Could not determine Snap downloads status from $FEED_URL after $ATTEMPTS attempts. Winging it!"
+  echo "Could not determine snap store services status from $FEED_URL after $ATTEMPTS attempts. Winging it!"
   exit 0
 fi
 
 if [[ $STATUS != *"Operational"* ]]; then
-  echo "Snap downloads is $STATUS at $PUB_DATE. Halting the pipeline!"
+  echo "snap store services is $STATUS at $PUB_DATE. Halting the pipeline!"
   exit 18
 fi
 
-echo "Snap downloads is $STATUS at $PUB_DATE"
+echo "snap store services is $STATUS at $PUB_DATE"
